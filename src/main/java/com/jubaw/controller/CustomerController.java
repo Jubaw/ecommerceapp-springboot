@@ -1,13 +1,19 @@
 package com.jubaw.controller;
 
 import com.jubaw.domain.Customer;
+import com.jubaw.exceptions.ResourceNotFound;
 import com.jubaw.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +51,11 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
         Customer found = customerService.getCustomerById(id);
-        return new ResponseEntity<>(found,HttpStatus.OK);
+        return new ResponseEntity<>(found, HttpStatus.OK);
     }
 
     //DELETE CUSTOMER BY ID
+    //http://localhost:8080/customers + DELETE
     @DeleteMapping("/custom")
     public ResponseEntity<String> deleteCustomer(@RequestParam("id") Long id) {
         customerService.deleteCustomer(id);
@@ -57,18 +64,40 @@ public class CustomerController {
     //TODO:Watch-Out here if it gives error on deletion.
 
     //GET CUSTOMER BY NAME
+    //http://localhost:8080/customers/query?name=
     @GetMapping("/query")
     public ResponseEntity<Customer> getCustomerByName(@RequestParam("name") String name) {
         Customer customerFound = customerService.getCustomerByName(name);
         return ResponseEntity.ok(customerFound);
     }
     //UPDATE CUSTOMER WITH ID
+
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCustomer(@PathVariable("id") Long id, @RequestBody Customer customer) {
         customerService.updateCustomer(id, customer);
         String message = "Customer is updated successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
+
+    //SHOW CUSTOMERS BY PAGE
+    @GetMapping("/page")
+    public ResponseEntity<Page<Customer>> getAllCustomers(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Customer> customerPage = customerService.getAllCustomers(pageable);
+        return ResponseEntity.ok(customerPage);
+    }
+
+    //GET FULL NAME
+    @GetMapping("/fullquery")
+    public ResponseEntity<Customer> getFullName(@RequestParam("name") String name, @RequestParam("lastName") String lastName) {
+        Customer customer = customerService.getCustomerByFullName(name,lastName);
+        return ResponseEntity.ok(customer);
+    }
+
+
+
+
+
+
 
 }
 
