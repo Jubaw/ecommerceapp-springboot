@@ -3,6 +3,7 @@ package com.jubaw.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 
@@ -15,7 +16,6 @@ import lombok.*;
 public class Product {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
@@ -24,8 +24,8 @@ public class Product {
 
     @NotBlank(message = "Product name cannot be empty")
     @NotNull(message = "Product name cannot be null")
-    @Column(nullable = false,unique = true)
-    private String productName;
+    @Column(nullable = false, unique = true)
+    private String name;
 
     @NotBlank(message = "Brand  cannot be empty")
     @NotNull(message = "Brand  cannot be null")
@@ -36,4 +36,5 @@ public class Product {
     @NotNull(message = "Price  cannot be null")
     @Column(nullable = false)
     private Double price;
+
 }

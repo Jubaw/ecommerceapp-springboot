@@ -1,6 +1,7 @@
 package com.jubaw.service;
 
 import com.jubaw.domain.Customer;
+import com.jubaw.domain.OrderItem;
 import com.jubaw.exceptions.ConflictException;
 import com.jubaw.exceptions.ResourceNotFound;
 import com.jubaw.repository.CustomerRepository;
@@ -65,7 +66,7 @@ public class CustomerService {
     }
 
     //GET CUSTOMER BY NAME
-    public Customer getCustomerByName(String name) {
+    public List<Customer> getCustomerByName(String name) {
         if (name == null) {
             throw new NullPointerException("No customer found with given name: " + name);
         }
@@ -85,5 +86,30 @@ public class CustomerService {
         }
         return customer;
 
+    }
+
+//    public List<Customer> getNameContains(String name) {
+//      List<Customer> customerList =   customerRepository.findByNameContainingCaseSensitive(name);
+//        if (customerList == null){
+//            throw new ResourceNotFound("Customers with the name provided could not be found.");
+//        }
+//        return customerList;
+//    }
+
+
+    public List<Customer> getCustomersByEndpoint(String name) {
+        List<Customer> customerList = customerRepository.findByNameEndpoint(name);
+        if (customerList.isEmpty()) {
+            throw new ResourceNotFound("Customers with the name provided could not be found.");
+        }
+        return customerList;
+    }
+
+    public List<OrderItem> getCustomerOrderById(Long id) {
+        List<OrderItem> orderItem= customerRepository.findOrderItemsByCustomerId(id);
+        if (orderItem.isEmpty()){
+            throw new ResourceNotFound("Customer has no orders");
+        }
+        return orderItem;
     }
 }

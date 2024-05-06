@@ -1,6 +1,7 @@
 package com.jubaw.controller;
 
 import com.jubaw.domain.Customer;
+import com.jubaw.domain.OrderItem;
 import com.jubaw.exceptions.ResourceNotFound;
 import com.jubaw.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,14 +67,14 @@ public class CustomerController {
     //GET CUSTOMER BY NAME
     //http://localhost:8080/customers/query?name=
     @GetMapping("/query")
-    public ResponseEntity<Customer> getCustomerByName(@RequestParam("name") String name) {
-        Customer customerFound = customerService.getCustomerByName(name);
+    public ResponseEntity<List<Customer>> getCustomerByName(@RequestParam("name") String name) {
+        List<Customer> customerFound = customerService.getCustomerByName(name);
         return ResponseEntity.ok(customerFound);
     }
     //UPDATE CUSTOMER WITH ID
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateCustomer(@PathVariable("id") Long id, @RequestBody Customer customer) {
+    public ResponseEntity<String> updateCustomer(@Valid @PathVariable("id") Long id, @RequestBody Customer customer) {
         customerService.updateCustomer(id, customer);
         String message = "Customer is updated successfully";
         return new ResponseEntity<>(message, HttpStatus.OK);
@@ -89,13 +90,24 @@ public class CustomerController {
     //GET FULL NAME
     @GetMapping("/fullquery")
     public ResponseEntity<Customer> getFullName(@RequestParam("name") String name, @RequestParam("lastName") String lastName) {
-        Customer customer = customerService.getCustomerByFullName(name,lastName);
+        Customer customer = customerService.getCustomerByFullName(name, lastName);
         return ResponseEntity.ok(customer);
     }
 
+    //GET NAME CONTAINING
+    @GetMapping("/jpql")
+    public ResponseEntity<List<Customer>> getNameContains(@RequestParam("name") String name) {
+        List<Customer> customer = customerService.getCustomersByEndpoint(name);
+        return ResponseEntity.ok(customer);
+        //TODO:NOT WORKING
+    }
 
-
-
+    //GET CUSTOMER ORDERS
+    @GetMapping("/allorder/{id}")
+    public ResponseEntity<List<OrderItem>> getAllOrder(@PathVariable("id") Long id) {
+        List<OrderItem> order = customerService.getCustomerOrderById(id);
+        return ResponseEntity.ok(order);
+    }
 
 
 
