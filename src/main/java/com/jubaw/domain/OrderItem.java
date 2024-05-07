@@ -2,11 +2,8 @@ package com.jubaw.domain;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
 @Setter
 @Getter
@@ -32,13 +29,13 @@ public class OrderItem {
     private Double totalPrice;
 
     @NotNull(message = "Product cannot be null")
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "product_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(nullable = false)
     private Product product;
 
     @NotNull(message = "Customer cannot be null")
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "customer_id", nullable = false)
+    @ManyToOne()
+    @JoinColumn(nullable = false)
     private Customer customer;
 
 

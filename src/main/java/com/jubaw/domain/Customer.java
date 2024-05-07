@@ -53,7 +53,7 @@ public class Customer {
                 '}';
     }
 
-    @OneToMany(mappedBy = "customer", orphanRemoval = true)
+    @OneToMany(mappedBy = "customer", orphanRemoval = true,cascade = CascadeType.ALL)
     private Set<OrderItem> orders;
 
 
