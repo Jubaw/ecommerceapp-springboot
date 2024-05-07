@@ -6,12 +6,10 @@ import com.jubaw.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -33,11 +31,29 @@ public class ProductController {
 //        return new ResponseEntity<>(map, HttpStatus.CREATED);
 //    }
 
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<String> saveProduct(@Valid @RequestBody Product product) {
         productService.saveProduct(product);
         return new ResponseEntity<>("Product has been saved successfully", HttpStatus.CREATED); //200
     }
+
+    //GET ALL PRODUCTS
+    @GetMapping
+    public ResponseEntity<List<Product>> getAllProducts(){
+        List<Product> products = productService.getProductList();
+        return ResponseEntity.ok(products);
+    }
+
+    //GET PRODUCT BY ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable Long id){
+        Product product = productService.getProductyById(id);
+
+        return  ResponseEntity.ok(product);
+
+    }
+
+    //
 
 
 

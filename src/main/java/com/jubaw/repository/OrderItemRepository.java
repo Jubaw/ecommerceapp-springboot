@@ -6,4 +6,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
+
+
+
+    OrderItem findByProductName(String name);
+
+    boolean existsByName(String name);
 }

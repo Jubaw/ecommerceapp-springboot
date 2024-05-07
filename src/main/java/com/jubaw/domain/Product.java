@@ -32,7 +32,7 @@ public class Product {
     @Column(nullable = false)
     private String brand;
 
-    @NotBlank(message = "Price  cannot be empty")
+
     @NotNull(message = "Price  cannot be null")
     @Column(nullable = false)
     private Double price;
