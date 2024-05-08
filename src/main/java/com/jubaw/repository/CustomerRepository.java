@@ -28,4 +28,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     List<Customer> findByNameEndpoint(@Param("name") String name);
 
     @Query("SELECT oi FROM OrderItem oi WHERE oi.customer.id = :customerId")
-    List<OrderItem> findOrderItemsByCustomerId(@Param("customerId") Long customerId);}
+    List<OrderItem> findOrderItemsByCustomerId(@Param("customerId") Long customerId);
+
+    @Query("SELECT c FROM Customer c WHERE LOWER(c.name) LIKE LOWER(concat('%', :word, '%')) OR LOWER(c.lastName) LIKE LOWER(concat('%', :word, '%'))")
+    List<Customer> searchCustomers(@Param("word") String word);
+}
+

@@ -3,6 +3,8 @@ package com.jubaw.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 @Setter
@@ -27,6 +29,7 @@ public class OrderItem {
     @NotNull(message = "Price cannot be null")
     @Column(nullable = false)
     private Double totalPrice;
+
 
     @NotNull(message = "Product cannot be null")
     @ManyToOne()

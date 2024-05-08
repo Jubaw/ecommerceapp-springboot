@@ -62,7 +62,7 @@ public class CustomerController {
         customerService.deleteCustomer(id);
         return ResponseEntity.ok("Customer has been deleted successfully");
     }
-    //TODO:Watch-Out here if it gives error on deletion.
+    //TODO:Watch-Out here if it gives error on deletion. //It didnt :))
 
     //GET CUSTOMER BY NAME
     //http://localhost:8080/customers/query?name=
@@ -107,6 +107,12 @@ public class CustomerController {
     public ResponseEntity<List<OrderItem>> getAllOrder(@PathVariable("id") Long id) {
         List<OrderItem> order = customerService.getCustomerOrderById(id);
         return ResponseEntity.ok(order);
+    }
+    //GET CUSTOMERS NAME OR SURNAME CONTAINING X
+    @GetMapping("/search")
+    public ResponseEntity<List<Customer>> searchCustomers(@RequestParam("word") String word) {
+        List<Customer> customers = customerService.searchCustomers(word);
+        return ResponseEntity.ok(customers);
     }
 
 

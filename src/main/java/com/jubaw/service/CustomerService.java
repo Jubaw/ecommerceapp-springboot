@@ -80,7 +80,7 @@ public class CustomerService {
 
     //
     public Customer getCustomerByFullName(String name, String lastName) {
-        Customer customer = customerRepository.findByFullName(name,lastName);
+        Customer customer = customerRepository.findByFullName(name, lastName);
         if (customer == null) {
             throw new ResourceNotFound("Customer you are looking for is not found.");
         }
@@ -106,10 +106,14 @@ public class CustomerService {
     }
 
     public List<OrderItem> getCustomerOrderById(Long id) {
-        List<OrderItem> orderItem= customerRepository.findOrderItemsByCustomerId(id);
-        if (orderItem.isEmpty()){
+        List<OrderItem> orderItem = customerRepository.findOrderItemsByCustomerId(id);
+        if (orderItem.isEmpty()) {
             throw new ResourceNotFound("Customer has no orders");
         }
         return orderItem;
+    }
+
+    public List<Customer> searchCustomers(String word) {
+        return customerRepository.searchCustomers(word);
     }
 }

@@ -9,6 +9,11 @@ import com.jubaw.service.CustomerService;
 import com.jubaw.service.OrderItemService;
 import com.jubaw.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +40,8 @@ public class OrderItemController {
 
 
     //CREATE ORDER
-    //http://localhost:8080/customers + POST
-    @PostMapping("/save/filter")
+    //http://localhost:8080/orders/save/filter + POST
+    @PostMapping("/save")
     public ResponseEntity<Map<String, String>> createOrder(@Valid @RequestParam("cid") Long customerId,
                                                            @RequestParam("prod") Long productId,
                                                            @RequestParam("quant") Integer quantity) {
@@ -63,8 +68,6 @@ public class OrderItemController {
     @PutMapping("/update/{id}/quantity/{newQuantity}")
     public ResponseEntity<Map<String, String>> updateOrderById(@Valid @RequestParam("{orderId}") Long id,
                                                                @RequestParam("{newQuantity}") Integer newQuantity) {
-
-
         orderItemService.updateOrder(id, newQuantity);
         Map<String, String> map = new HashMap<>();
         map.put("message", "Order quantity has been updated successfully");
@@ -72,11 +75,35 @@ public class OrderItemController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderItem>> getAll(@RequestParam )
+    //GET ORDER
+   // http://localhost:8080/orders + GET
+    @GetMapping()
+    public ResponseEntity<List<OrderItem>> getAll(){
+        List<OrderItem> orderItems = orderItemService.getAllOrders();
+        return ResponseEntity.ok(orderItems);
+    }
 
+    @GetMapping("/page") // http://localhost:8080/students/page?page=0&size=2&sort=name&direction=ASC
+    public ResponseEntity<Page<OrderItem>> getAllWithPage(
+            @RequestParam("page") int page, // kacinci sayfa gelecek
+            @RequestParam("size") int size, // page basi kac nesne
+            @RequestParam(value = "sort",defaultValue = "id") String  prop, // siralamada kullanilacak degisken
+            @RequestParam("direction") Sort.Direction direction // siralama yonu
+    ) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, prop));
+        Page<OrderItem> studentPage = orderItemService.getAllWithPage(pageable);
+        return ResponseEntity.ok(studentPage);
+    }
+    //DELETE ORDER BY ID
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteOrderById(@RequestParam("id") Long id){
+       orderItemService.deleteOrderById(id);
+       return ResponseEntity.ok("Order has been deleted");
 
     }
+
+
 
 
 }

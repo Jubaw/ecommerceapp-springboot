@@ -5,6 +5,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.Set;
@@ -52,7 +53,7 @@ public class Customer {
                 ", phone='" + phone + '\'' +
                 '}';
     }
-
+    @JsonIgnore
     @OneToMany(mappedBy = "customer", orphanRemoval = true,cascade = CascadeType.ALL)
     private Set<OrderItem> orders;
 
