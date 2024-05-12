@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.jubaw</groupId>
-	<artifactId>spring-jwt</artifactId>
+	<artifactId>EcommerceAppSpringBoot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-jwt</name>
+	<name>EcommerceAppSpringBoot</name>
 	<description>project for Spring Security</description>
 	<properties>
 		<java.version>17</java.version>
